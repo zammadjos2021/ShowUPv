@@ -1,0 +1,90 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile and app settings for timekeeping",
+      "type": "object",
+      "properties": {
+        "employeeName": { "type": "string", "description": "Full name of the employee" },
+        "employeeId": { "type": "string", "description": "Employee company ID" },
+        "department": { "type": "string", "description": "Department name" },
+        "companyName": { "type": "string", "description": "Company name" },
+        "profilePicture": { "type": "string", "description": "Profile picture URL or base64 data" },
+        "standardDailyHours": { "type": "number", "description": "Standard daily work hours" },
+        "defaultBreakMinutes": { "type": "number", "description": "Default lunch/break duration in minutes" },
+        "defaultTimeIn": { "type": "string", "description": "Default clock-in time" },
+        "defaultTimeOut": { "type": "string", "description": "Default clock-out time" },
+        "timeFormat": { "type": "string", "enum": ["12h", "24h"], "description": "Preferred clock format" },
+        "email": { "type": "string", "description": "User email address" },
+        "updatedAt": { "type": "number", "description": "Last updated timestamp" }
+      },
+      "required": ["employeeName", "companyName", "standardDailyHours", "defaultBreakMinutes"]
+    },
+    "TimeRecord": {
+      "title": "TimeRecord",
+      "description": "Daily clock-in and clock-out record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique record identifier" },
+        "date": { "type": "string", "description": "Date of the record YYYY-MM-DD" },
+        "timeIn": { "type": "string", "description": "Clock in time in HH:mm" },
+        "timeOut": { "type": "string", "description": "Clock out time in HH:mm" },
+        "breakDurationMinutes": { "type": "number", "description": "Break duration in minutes" },
+        "totalHours": { "type": "number", "description": "Total net work hours" },
+        "remarks": { "type": "string", "description": "Notes or remarks for the shift" },
+        "tags": { "type": "array", "description": "Categorization tags" },
+        "createdAt": { "type": "number", "description": "Record creation timestamp" },
+        "updatedAt": { "type": "number", "description": "Last updated timestamp" }
+      },
+      "required": ["id", "date", "timeIn", "totalHours", "createdAt", "updatedAt"]
+    },
+    "ShiftNote": {
+      "title": "ShiftNote",
+      "description": "Shift task note or reminder item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique note identifier" },
+        "date": { "type": "string", "description": "Associated date" },
+        "title": { "type": "string", "description": "Title of note" },
+        "content": { "type": "string", "description": "Content of note" },
+        "createdAt": { "type": "string", "description": "ISO date string" },
+        "reminderDate": { "type": "string", "description": "Date for reminder" },
+        "reminderTime": { "type": "string", "description": "Time for reminder" },
+        "reminderEnabled": { "type": "boolean", "description": "Whether reminder is active" },
+        "notified": { "type": "boolean", "description": "Whether notification was fired" },
+        "completed": { "type": "boolean", "description": "Whether task is completed" }
+      },
+      "required": ["id", "title", "createdAt"]
+    },
+    "ShiftAlarm": {
+      "title": "ShiftAlarm",
+      "description": "Configured shift alarm item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique alarm identifier" },
+        "label": { "type": "string", "description": "Alarm label" },
+        "time": { "type": "string", "description": "Time of alarm in HH:mm" },
+        "enabled": { "type": "boolean", "description": "Whether alarm is active" }
+      },
+      "required": ["id", "label", "time", "enabled"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores individual user profile and timekeeping settings"
+    },
+    "/users/{userId}/records/{recordId}": {
+      "schema": "TimeRecord",
+      "description": "Subcollection storing time attendance records for each user"
+    },
+    "/users/{userId}/notes/{noteId}": {
+      "schema": "ShiftNote",
+      "description": "Subcollection storing shift notes and tasks for each user"
+    },
+    "/users/{userId}/alarms/{alarmId}": {
+      "schema": "ShiftAlarm",
+      "description": "Subcollection storing shift alarms for each user"
+    }
+  }
+}

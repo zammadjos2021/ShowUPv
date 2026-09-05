@@ -1,0 +1,8 @@
+{
+  "name": "Remix Daily Time Keeping",
+  "description": "Mobile-ready Daily Time Record (DTR) app to log date, time in, time out, total work hours, and remarks with history and export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
